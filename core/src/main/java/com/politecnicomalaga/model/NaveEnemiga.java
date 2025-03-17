@@ -1,11 +1,10 @@
 package com.politecnicomalaga.model;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Enemigo extends Nave{
+public class NaveEnemiga extends Nave{
 
-    public Enemigo(int iPosicionX, int iPosicionY, int iAlto, int iAncho, int iVelocidad, Texture tImg) {
+    public NaveEnemiga(int iPosicionX, int iPosicionY, int iAlto, int iAncho, int iVelocidad, Texture tImg) {
         super(iPosicionX, iPosicionY, iAlto, iAncho, iVelocidad, tImg);
     }
 
