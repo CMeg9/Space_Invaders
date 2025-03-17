@@ -10,16 +10,11 @@ import java.util.Iterator;
 public class NaveAmiga extends ObjetoVolador {
 
     private ArrayList<DisparoAmigo> disparos;
-    private Texture imgDisparo;
-
-    private Texture imgNave;
     private float tiempoUltimoDisparo;
     private float cadenciaDisparo = 0.3f; // Puede disparar cada 0.3 segundos
 
     public NaveAmiga(int iPosicionX, int iPosicionY, int iAlto, int iAncho, int iVelocidad, boolean bVivo, Texture tImg, Texture imgDisparo) {
         super(iPosicionX, iPosicionY, iAlto, iAncho, iVelocidad, bVivo, tImg);
-        this.imgDisparo = imgDisparo;
-        this.imgNave = new Texture("NaveAmiga.png");
         this.disparos = new ArrayList<>();
         this.tiempoUltimoDisparo = 0;
     }
