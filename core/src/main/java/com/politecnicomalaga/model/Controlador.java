@@ -70,7 +70,7 @@ public class Controlador {
 
     }
     public verImputs(){
-
+ mayonesa
     }
 }
 
