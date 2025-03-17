@@ -1,14 +1,13 @@
 package com.politecnicomalaga.model;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.List;
 
-public class Enemigo extends Nave{
-    List<DisparoEnemigo> Disparos;
 
-    public Enemigo(int iPosicionX, int iPosicionY, int iAlto, int iAncho, int iVelocidad, Texture tImg) {
+public class NaveEnemiga extends Nave{
+    List<DisparoEnemigo> Disparos;
+    public NaveEnemiga(int iPosicionX, int iPosicionY, int iAlto, int iAncho, int iVelocidad, Texture tImg) {
         super(iPosicionX, iPosicionY, iAlto, iAncho, iVelocidad, tImg);
     }
 
