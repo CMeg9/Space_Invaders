@@ -4,12 +4,30 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Disparo extends ObjetoVolador {
 
-    public Disparo(int iPosicionX, int iPosicionY, int iAlto, int iAncho, int iVelocidad, Texture tImg){
+    // Creacion de enum para dar Origen sobre el enemigo y jugador
+    public enum Origen {NaveAmiga, NaveEnemiga}
+    // Nombrar de origen
+    private Origen origen;
 
-        super(iPosicionX,iPosicionY,iAlto,iAncho,iVelocidad,true,tImg);
-
+    // Herencia
+    public Disparo(int iPosicionX, int iPosicionY, int iAlto, int iAncho, int iVelocidad, Texture tImg, Origen origen) {
+        super(iPosicionX, iPosicionY, iAlto, iAncho, iVelocidad, true, tImg);
+        this.origen = origen;
     }
 
-
-
+    // Mover el disparo, si es player se mueve arriba y hacia abajo si es enemigo
+    public void moverseY() {
+        // Mueve el disparo en Y según la velocidad
+        if (origen == Origen.NaveAmiga) { // Si es jugador
+            setiPosicionY(getiPosicionY() - getiVelocidad()); // Disparo hacia arriba
+        } else if (origen == Origen.NaveEnemiga) { // Si es enemigo
+            setiPosicionY(getiPosicionY() + getiVelocidad()); // Disparo hacia abajo
+        }
+    }
+    public Origen getOrigen() {
+        return origen;
+    }
+    public void setOrigen(Origen origen) {
+        this.origen = origen;
+    }
 }
