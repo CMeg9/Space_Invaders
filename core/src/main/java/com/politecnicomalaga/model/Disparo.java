@@ -1,12 +1,13 @@
 package com.politecnicomalaga.model;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Disparo extends ObjetoVolador {
 
     // Creacion de enum para dar Origen sobre el enemigo y jugador
     public enum Origen {NaveAmiga, NaveEnemiga}
-    // Nombrar de origen
+    // Nombra de origen
     private Origen origen;
 
     // Herencia
@@ -30,4 +31,10 @@ public class Disparo extends ObjetoVolador {
     public void setOrigen(Origen origen) {
         this.origen = origen;
     }
+
+    //Metodo para dibujar el disparo
+    public void draw(SpriteBatch batch) {
+        batch.draw(gettImg(), getiPosicionX(), getiPosicionY(), getiAncho(), getiAlto());
+    }
+
 }

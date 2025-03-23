@@ -19,14 +19,17 @@ public class Controlador {
 
     private Texture imgDisparo;
 
+    private Texture imgDisparoEnemigo;
+
     public Controlador(float xPantalla, float yPantalla, float xInput, float yInput) {
         this.xPantalla = xPantalla;
         this.yPantalla = yPantalla;
         this.xInput = xInput;
         this.yInput = yInput;
-        this.imgNaveEnemiga = new Texture("NaveAmigaa.png");
+        this.imgNaveAmiga = new Texture("NaveAmiga.png");
         this.imgNaveEnemiga = new Texture("NaveEnemiga.png");
-        this.imgNaveEnemiga = new Texture("Disparo.png");
+        this.imgDisparo = new Texture("disparo.png");
+        this.imgDisparoEnemigo = new Texture("disparo_enemigo.png");
     }
 
     public float getxPantalla() {
@@ -69,8 +72,6 @@ public class Controlador {
     public void render(){
 
     }
-    public verImputs(){
- mayonesa
-    }
+    public void verImputs(){}
 }
 
