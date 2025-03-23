@@ -15,6 +15,8 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
         image = new Texture("libgdx.png");
         image = new Texture("NameAmiga.png");
+        image = new Texture("disparo.png");
+        image = new Texture("disparo_enemigo.png");
     }
 
     @Override
