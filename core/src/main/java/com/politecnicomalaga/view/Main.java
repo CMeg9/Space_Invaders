@@ -9,14 +9,19 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture image;
+    private Texture disparo;
+    private Texture disparoEnemig;
+
+
+
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         image = new Texture("libgdx.png");
-        image = new Texture("disparo.png");
-        image = new Texture("disparo.png");
-        image = new Texture("disparo_enemigo.png");
+        image = new Texture("NaveAmiga.png");
+        disparo = new Texture("disparo.png");
+        disparoEnemig = new Texture("disparo_enemigo.png");
     }
 
     @Override
