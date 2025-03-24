@@ -6,19 +6,26 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Batallon extends Escuadron{
 
+    private final float velocidadx;
+    private final float velocidady;
+        ;
     private Escuadron [] escuadrones;
 
     private int posicionx;
     private int posiciony;
 
-    public Batallon(int posicionx, int posiciony) {
-        super();
+
+    public Batallon(int iPosicionY, float velocidadX, float velocidadY, Texture tImgNaveEnemiga, Texture imgDisparoEnemigo, int anchoPantalla, int numNaves, float velocidadx, float velocidady) {
+        super(iPosicionY, velocidadX, velocidadY, tImgNaveEnemiga, imgDisparoEnemigo, anchoPantalla, numNaves);
+        this.velocidadx = velocidadx;
+        this.velocidady = velocidady;
+
         this.posicionx = posicionx;
         this.posiciony = posiciony;
         Escuadron [] escuadrones = new Escuadron[2];
 
-        escuadrones[0] = new Escuadron(posiciony,velocidadx, velocidady, Texture tImgNaveEnemiga, imgDisparoEnemigo, anchoPantalla, numNaves);
-        escuadrones[1] = new Escuadron(posiciony,velocidadx, velocidady, Texture tImgNaveEnemiga, imgDisparoEnemigo, anchoPantalla, numNaves);
+        escuadrones[0] = new Escuadron(posiciony,velocidadx, velocidady, tImgNaveEnemiga, imgDisparoEnemigo, anchoPantalla, numNaves);
+        escuadrones[1] = new Escuadron(posiciony,velocidadx, velocidady, tImgNaveEnemiga, imgDisparoEnemigo, anchoPantalla, numNaves);
     }
 
     public void moverse (int direcX, int direcY) {
