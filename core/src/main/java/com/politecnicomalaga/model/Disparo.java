@@ -11,7 +11,7 @@ public class Disparo extends ObjetoVolador {
     private Origen origen;
 
     // Herencia
-    public Disparo(int iPosicionX, int iPosicionY, int iAlto, int iAncho, int iVelocidad, Texture tImg, Origen origen) {
+    public Disparo(int i, int i1, Texture texture, int i2) {
         super(iPosicionX, iPosicionY, iAlto, iAncho, iVelocidad, true, tImg);
         this.origen = origen;
     }

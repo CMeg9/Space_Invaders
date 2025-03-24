@@ -26,7 +26,7 @@ public class Controlador {
         this.yPantalla = yPantalla;
         this.xInput = 0;
         this.yInput = 0;
-        
+
         // Cargar imágenes
         this.imgNaveAmiga = new Texture("NaveAmiga.png");
         this.imgNaveEnemiga = new Texture("NaveEnemiga.png");
@@ -34,7 +34,7 @@ public class Controlador {
         this.imgDisparoEnemigo = new Texture("disparo_enemigo.png");
 
         // Inicializar nave y enemigos
-        this.nave = new Nave(xPantalla / 2, 50, 40, 40, 5, imgNaveAmiga);
+        this.nave = new Nave((int) (xPantalla / 2), 50, 40, 40, 5, imgNaveAmiga);
         this.enemigos = new ArrayList<>();
         this.disparos = new ArrayList<>();
         iniciarEnemigos();

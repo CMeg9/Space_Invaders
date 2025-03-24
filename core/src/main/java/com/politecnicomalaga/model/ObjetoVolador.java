@@ -4,13 +4,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class ObjetoVolador {
-    private int iPosicionX;
-    private int iPosicionY;
-    private int iAlto;
-    private int iAncho;
-    private int iVelocidad;
+
+    public static final int ANCHO_JUEGO = 100;
+    public static final int ALTO_JUEGO = 100;
+    public static int iPosicionX;
+    public static int iPosicionY;
+    public static int iAlto;
+    public static int iAncho;
+    public static int iVelocidad;
     private boolean bVivo;
-    private Texture tImg;
+    public static Texture tImg;
 
     public ObjetoVolador(int iPosicionX, int iPosicionY, int iAlto, int iAncho, int iVelocidad, boolean bVivo, Texture tImg) {
         this.iPosicionX = iPosicionX;

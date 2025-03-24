@@ -24,7 +24,7 @@ public class NaveAmiga extends ObjetoVolador {
         super.moverse(iDireccionX, iDireccionY); // lo hereda de ObjetoVolador
     }
 
-    public void moverseFlechas(float delta) {
+    public void moverseFlechas(float delta, Texture imgDisparo) {
         // Movimiento basado en teclado
         int iDireccionX = 0;
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
@@ -40,12 +40,12 @@ public class NaveAmiga extends ObjetoVolador {
         // Control de disparo
         tiempoUltimoDisparo += delta;
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && tiempoUltimoDisparo >= cadenciaDisparo) {
-            disparar();
+            disparar(imgDisparo);
             tiempoUltimoDisparo = 0;
         }
     }
 
-    public void disparar() {
+    public void disparar(Texture imgDisparo) {
         // Crear un disparo desde el centro de la nave
         DisparoAmigo disparo = new DisparoAmigo(
             getiPosicionX() + getiAncho() / 2 - imgDisparo.getWidth() / 2,
@@ -54,8 +54,8 @@ public class NaveAmiga extends ObjetoVolador {
         disparos.add(disparo);
     }
 
-    public void actualizar(float delta) {
-        moverseFlechas(delta);
+    public void actualizar(float delta, Texture imgDisparo) {
+        moverseFlechas(delta, imgDisparo);
 
         // Actualizar disparos
         Iterator<DisparoAmigo> iter = disparos.iterator();

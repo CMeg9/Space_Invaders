@@ -3,11 +3,10 @@ package com.politecnicomalaga.model;
 import com.badlogic.gdx.graphics.Texture;
 
 public class DisparoAmigo extends Disparo{
-    public DisparoAmigo(int iPosicionX, int iPosicionY, int iAlto, int iAncho, int iVelocidad, Texture tImg){
-
-        super(iPosicionX,iPosicionY,iAlto,iAncho,iVelocidad,tImg);
-
+    public DisparoAmigo(int i, int i1, Texture texture, int i2) {
+        super(i, i1, texture, i2);
     }
+
 
     //El disparo amigo tiene que golpear nave enemiga tiene que saber si lo que golpea
     //es una nave enemiga

@@ -9,7 +9,7 @@ import java.util.TimerTask;
 
 public class NaveEnemiga extends Nave{
     ArrayList<Disparo> Disparos;
-
+    private Disparo Disparo;
 
 
     public NaveEnemiga(int iPosicionX, int iPosicionY, int iAlto, int iAncho, int iVelocidad, Texture tImg) {
@@ -46,17 +46,8 @@ public class NaveEnemiga extends Nave{
     }
 
 
-    //Esto todavia no se como arreglar lo de colision para qu eno me salte el fallo
-    public void moverseIzquierda (int iDireccionX, int iDireccionY) {
-        iDireccionX = iDireccionX + 10;
-    }
 
 
-    public void moverseDerecha(int iDireccionX, int iDireccionY) {
-        iDireccionX = iDireccionX - 10;
-    }
-    //El movimiento no se si va a funcionar
-    @Override
     public boolean colision(Disparo disparo) {
         return super.colision(disparo);
     }
