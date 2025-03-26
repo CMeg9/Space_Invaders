@@ -52,5 +52,5 @@ public class NaveEnemiga extends Nave{
         return super.colision(disparo);
     }
 
-    //Aqui no realiza el override
+
 }

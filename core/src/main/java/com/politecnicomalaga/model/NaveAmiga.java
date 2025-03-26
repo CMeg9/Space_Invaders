@@ -68,7 +68,7 @@ public class NaveAmiga extends ObjetoVolador {
         }
     }
 
-    @Override
+
     public void draw(SpriteBatch batch) {
         super.draw(batch);
 

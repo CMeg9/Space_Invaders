@@ -18,6 +18,8 @@ public class Controlador {
     private Texture imgDisparoEnemigo;
 
     private Nave nave;
+
+    private NaveAmiga jugador;
     private ArrayList<NaveEnemiga> enemigos;
     private ArrayList<DisparoAmigo> disparos;
 
@@ -40,7 +42,7 @@ public class Controlador {
         iniciarEnemigos();
     }
 
-    private void iniciarEnemigos() {
+    public void iniciarEnemigos() {
         for (int i = 0; i < 2; i++) { // Dos filas
             for (int j = 0; j < 12; j++) { // Doce enemigos por fila
                 enemigos.add(new NaveEnemiga(50 + j * 50, (int) yPantalla - i * 50, 40, 40, 2, imgNaveEnemiga));
@@ -58,7 +60,7 @@ public class Controlador {
                 disparar();
             }
             // Movimiento a la izquierda
-            else if (xInput < xPantalla / 2) {
+            if (xInput < xPantalla / 2) {
                 nave.moverse(-1, 0);
             }
             // Movimiento a la derecha
