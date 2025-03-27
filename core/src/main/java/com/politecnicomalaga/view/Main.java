@@ -31,7 +31,7 @@ public class Main extends ApplicationAdapter {
         disparo = new Texture("disparo.png");
         disparoEnemig = new Texture("disparo_enemigo.png");
 
-        controlador = new Controlador(100,100);
+        controlador = new Controlador(500,500);
         controlador.iniciarEnemigos();
     }
 
@@ -39,12 +39,14 @@ public class Main extends ApplicationAdapter {
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         controlador.verInputs();
-        batch.begin();
+
+
         controlador.disparar();
         controlador.actualizar();
         controlador.juegoTerminado();
+        batch.begin();
+
         controlador.draw(batch);
-        batch.draw(image, 1, 210);
         batch.end();
     }
 

@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class ObjetoVolador {
 
-    public static final int ANCHO_JUEGO = 100;
-    public static final int ALTO_JUEGO = 100;
+    public static final int ANCHO_JUEGO = 500;
+    public static final int ALTO_JUEGO = 500;
     public static int iPosicionX;
     public static int iPosicionY;
     public static int iAlto;
