@@ -4,26 +4,26 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class ObjetoVolador {
-    protected Rectangle bounds;
+    protected Rectangle limites;
 
     public ObjetoVolador(float x, float y, float width, float height) {
-        bounds = new Rectangle(x, y, width, height);
+        limites = new Rectangle(x, y, width, height);
     }
 
     public float getX() {
-        return bounds.x;
+        return limites.x;
     }
 
     public float getY() {
-        return bounds.y;
+        return limites.y;
     }
 
     public float getWidth() {
-        return bounds.width;
+        return limites.width;
     }
 
     public float getHeight() {
-        return bounds.height;
+        return limites.height;
     }
 
     public abstract void actualizar();
