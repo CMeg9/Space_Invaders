@@ -1,135 +1,90 @@
 package com.politecnicomalaga.model;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.utils.ScreenUtils;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Controlador {
-    private NaveAmiga jugador;
+    private NaveAmiga naveAmiga;
     private Batallon batallon;
-    private ArrayList<Disparo> disparos;
-    private ArrayList<NaveEnemiga> enemigos;
-    private Music music_playing;
-    private Music vgmdisparo;
-    private Texture gameover;
-    private Texture gamewin;
-    private int totalNavesVivas;
+    private List<Disparo> disparos;
+    private boolean juegoTerminado;
+    private boolean victoria;
+    private Texture imagenVictoria;
+    private Texture imagenDerrota;
 
     public Controlador() {
-        // Inicializar texturas, sonidos y objetos
-        this.jugador = new NaveAmiga(Gdx.graphics.getWidth() / 2, 0, 1, 30, 30, new Texture("ship.png"), true, ObjetoVolador.direccion.IZQ, 3);
-        this.batallon = new Batallon("enemy", 3, 8, 30, 30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new Texture("bullet.png"), 1);
-        this.enemigos = new ArrayList<>();
-        this.disparos = new ArrayList<>();
-        this.music_playing = Gdx.audio.newMusic(Gdx.files.internal("cadetOST.mp3"));
-        this.vgmdisparo = Gdx.audio.newMusic(Gdx.files.internal("shoot.mp3"));
-        this.gameover = new Texture("gameover2.jpeg");
-        this.gamewin = new Texture("win.png");
-        this.music_playing.setLooping(true);
-        this.music_playing.play();
-        iniciarEnemigos();
-    }
-
-    public void manejarEntradas() {
-        if (Gdx.input.isTouched()) {
-            int iPosXClicked = Gdx.input.getX();
-            int iPosYClicked = Gdx.input.getY();
-
-            if (iPosYClicked > Gdx.graphics.getHeight() / 2) {
-                if (iPosXClicked < jugador.getPosX()) {
-                    jugador.setDireccion(ObjetoVolador.direccion.IZQUIERDA);
-                } else {
-                    jugador.setDireccion(ObjetoVolador.direccion.DERECHA);
-                }
-                jugador.moverse(jugador.getDireccion());
-            } else {
-                if (Gdx.input.justTouched()) {
-                    jugador.disparar(new Texture("disparo.png"));
-                    vgmdisparo.play();
-                }
-            }
-        }
+        naveAmiga = new NaveAmiga();
+        batallon = new Batallon();
+        disparos = new ArrayList<>();
+        juegoTerminado = false;
+        victoria = false;
+        imagenVictoria = new Texture("ImagenVictoria.png");
+        imagenDerrota = new Texture("ImagenDerrota.png");
     }
 
     public void actualizar() {
-        // Actualizar disparos del jugador
-        jugador.updateDisparos();
-        gestionarColisiones();
-    }
-
-    public void draw(SpriteBatch batch) {
-        if (jugador.isEstaVivo()) {
-            jugador.drawDisparos(batch);
-            batch.draw(jugador.getImagen(), jugador.getPosX(), jugador.getPosY(), jugador.getAncho(), jugador.getAlto());
+        if (juegoTerminado) {
+            return;
         }
 
-        // Dibujar batallón de enemigos
-        totalNavesVivas = batallon.draw(batch);
-
-        // Verificar estado del juego
-        if (!jugador.isEstaVivo()) {
-            batch.draw(gameover, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // Control de la nave amiga
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            naveAmiga.moverIzquierda();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            naveAmiga.moverDerecha();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            disparos.add(new DisparoAmigo(naveAmiga.getX() + naveAmiga.getWidth() / 2, naveAmiga.getY()));
         }
 
-        if (totalNavesVivas == 0) {
-            batch.draw(gamewin, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            music_playing.stop();
-        }
-    }
+        naveAmiga.actualizar();
+        batallon.actualizar();
 
-    private void gestionarColisiones() {
-        // Comprobar las colisiones de los disparos con los enemigos
-        for (Disparo disparo : jugador.getDisparos()) {
-            for (Escuadron escuadron : batallon.getEscuadrones()) {
-                for (NaveEnemiga nave : escuadron.getNaves()) {
-                    if (nave.colisionar(nave, disparo)) {
-                        escuadron.getNaves().remove(nave);
-                        jugador.getDisparos().remove(disparo);
-                        totalNavesVivas--;
-                        break;
-                    }
-                }
+        Iterator<Disparo> iter = disparos.iterator();
+        while (iter.hasNext()) {
+            Disparo disparo = iter.next();
+            disparo.actualizar();
+            if (disparo.getY() > Gdx.graphics.getHeight() || disparo.getY() < 0) {
+                iter.remove();
             }
         }
 
-        // Comprobar las colisiones con los disparos enemigos y la nave amiga
-        for (Escuadron escuadron : batallon.getEscuadrones()) {
-            for (NaveEnemiga nave : escuadron.getNaves()) {
-                for (Disparo disparo : nave.getDisparos()) {
-                    if (jugador.colisionar(jugador, disparo)) {
-                        jugador.setEstaVivo(false);
-                    }
-                }
+        // Lógica de colisiones
+        for (Disparo disparo : disparos) {
+            if (disparo instanceof DisparoAmigo) {
+                batallon.verificarColision(disparo, iter);
+            } else if (disparo.bounds.overlaps(naveAmiga.bounds)) {
+                juegoTerminado = true;
+                victoria = false;
             }
         }
 
-        // Comprobar si la nave amiga colisiona con los enemigos
-        for (Escuadron escuadron : batallon.getEscuadrones()) {
-            for (NaveEnemiga nave : escuadron.getNaves()) {
-                if (jugador.colisionar(jugador, nave)) {
-                    jugador.setEstaVivo(false);
-                }
-            }
+        // Verificar si todos los enemigos han sido derrotados
+        if (batallon.todosDerrotados()) {
+            juegoTerminado = true;
+            victoria = true;
         }
     }
 
-    private void iniciarEnemigos() {
-        // Aquí es donde se crean los enemigos en el batallón
-        for (int i = 0; i < 3; i++) { // Tres filas de enemigos
-            for (int j = 0; j < 8; j++) { // Ocho enemigos por fila
-                enemigos.add(new NaveEnemiga(50 + j * 50, Gdx.graphics.getHeight() - (i + 1) * 50, 30, 30, new Texture("enemy.png")));
+    public void dibujar(SpriteBatch batch) {
+        if (juegoTerminado) {
+            if (victoria) {
+                batch.draw(imagenVictoria, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            } else {
+                batch.draw(imagenDerrota, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            }
+        } else {
+            naveAmiga.dibujar(batch);
+            batallon.dibujar(batch);
+            for (Disparo disparo : disparos) {
+                disparo.dibujar(batch);
             }
         }
-    }
-
-    public void dispose() {
-        // Limpiar los recursos
-        music_playing.dispose();
-        vgmdisparo.dispose();
-        gameover.dispose();
-        gamewin.dispose();
     }
 }

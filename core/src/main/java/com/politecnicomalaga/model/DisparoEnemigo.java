@@ -4,26 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 
-public class NaveAmiga extends Nave {
+public class DisparoEnemigo extends Disparo {
     private static final float VELOCIDAD = 200;
     private Texture textura;
 
-    public NaveAmiga() {
-        super(100, 50, 30, 20);
-        textura = new Texture("NaveAmiga.png");
-    }
-
-    public void moverIzquierda() {
-        bounds.x -= VELOCIDAD * Gdx.graphics.getDeltaTime();
-    }
-
-    public void moverDerecha() {
-        bounds.x += VELOCIDAD * Gdx.graphics.getDeltaTime();
+    public DisparoEnemigo(float x, float y) {
+        super(x, y, 5, 10);
+        textura = new Texture("disparo_enemigo.png");
     }
 
     @Override
     public void actualizar() {
-        // Lógica de actualización de la nave amiga
+        bounds.y -= VELOCIDAD * Gdx.graphics.getDeltaTime();
     }
 
     @Override
