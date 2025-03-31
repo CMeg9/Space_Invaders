@@ -46,6 +46,7 @@ public class Controlador {
         naveAmiga.actualizar();
         batallon.actualizar();
 
+        //Para una lista, en este caso iterador de disparos, si se sale de la pantalla que se remove
         Iterator<Disparo> iter = disparos.iterator();
         while (iter.hasNext()) {
             Disparo disparo = iter.next();
@@ -72,6 +73,8 @@ public class Controlador {
         }
     }
 
+    //poner imagen de victoria o derrota dependiendo si se gana o se pierde
+    //si no se ha terminado de jugar que se dubujen las naves y disparos
     public void dibujar(SpriteBatch batch) {
         if (juegoTerminado) {
             if (victoria) {

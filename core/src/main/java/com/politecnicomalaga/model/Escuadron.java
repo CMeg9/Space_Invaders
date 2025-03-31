@@ -9,6 +9,7 @@ import java.util.List;
 public class Escuadron {
     private List<NaveEnemiga> naves;
 
+    //pone naves dependiendo del espacio en pantalla
     public Escuadron(int cantidad, float y) {
         naves = new ArrayList<>();
         float espacio = Gdx.graphics.getWidth() / (cantidad + 1);
@@ -29,6 +30,7 @@ public class Escuadron {
         }
     }
 
+    //Con un iterador de disparos y otro de naves enemigas, si se colapsan se eliminan ambos
     public void verificarColision(Disparo disparo, Iterator<Disparo> iter) {
         Iterator<NaveEnemiga> naveIter = naves.iterator();
         while (naveIter.hasNext()) {
