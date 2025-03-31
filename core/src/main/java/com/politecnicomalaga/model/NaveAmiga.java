@@ -14,11 +14,15 @@ public class NaveAmiga extends Nave {
     }
 
     public void moverIzquierda() {
-        limites.x -= VELOCIDAD * Gdx.graphics.getDeltaTime();
+        if (limites.x > 0) {
+            limites.x -= VELOCIDAD * Gdx.graphics.getDeltaTime();
+        }
     }
 
     public void moverDerecha() {
-        limites.x += VELOCIDAD * Gdx.graphics.getDeltaTime();
+        if (limites.x < Gdx.graphics.getWidth()-super.getWidth()) {
+            limites.x += VELOCIDAD * Gdx.graphics.getDeltaTime();
+        }
     }
 
     @Override

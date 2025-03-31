@@ -9,6 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Controlador {
+
+    public static final int TAMAÑO_PANTALLA_X = Gdx.graphics.getWidth();
+
+    public static final int TAMAÑO_PANTALLA_Y = Gdx.graphics.getHeight();
     private NaveAmiga naveAmiga;
     private Batallon batallon;
     private List<Disparo> disparos;
