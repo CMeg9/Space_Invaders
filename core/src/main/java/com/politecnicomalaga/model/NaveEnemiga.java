@@ -1,56 +1,65 @@
 package com.politecnicomalaga.model;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.Timer;
-
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
-import java.util.TimerTask;
+import java.util.Iterator;
 
+public class NaveEnemiga extends ObjetoVolador {
+    private ArrayList<DisparoEnemigo> disparos;
+    private float tiempoUltimoDisparo;
+    private final float cadenciaDisparo = 1.5f; // Dispara cada 1.5 segundos
+    private final Texture imgDisparoEnemigo;
 
-public class NaveEnemiga extends Nave{
-    ArrayList<Disparo> Disparos;
-    private Disparo Disparo;
-
-
-    public NaveEnemiga(int iPosicionX, int iPosicionY, int iAlto, int iAncho, int iVelocidad, Texture tImg) {
-        super(iPosicionX, iPosicionY, iAlto, iAncho, iVelocidad, tImg);
+    public NaveEnemiga(int posX, int posY, int ancho, int alto, int velocidad, Texture imagen) {
+        super(posX, posY, ancho, alto, velocidad, imagen);
+        this.disparos = new ArrayList<>();
+        this.tiempoUltimoDisparo = 0;
+        this.imgDisparoEnemigo = new Texture("disparo_enemigo.png"); // Textura compartida para todos los disparos
     }
 
-    private void iniciarDisparos() {
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                disparar();
-            }
-        }, 0, 1); // Primer disparo inmediato, luego cada 5 segundos
-    }
-    //Aqui usamos un timer lo cual no se si va a servir
-
-
+    // Método para disparar con cadencia
     public void disparar() {
-        // Crear un disparo en la posición actual de la nave
-        Disparo disparo = new Disparo(getiPosicionX() + getiAncho() / 2, getiPosicionY() + getiAlto(), new Texture("disparo.png"), 5);
-        // Aquí deberíamos añadir el disparo a una lista de disparos en la clase principal del juego
-
-        Disparos.add(disparo);
-
+        DisparoEnemigo disparo = new DisparoEnemigo(getPosX() + getAncho() / 2, getPosY(), imgDisparoEnemigo, 5);
+        disparos.add(disparo);
     }
 
-
-    public boolean fallece() {
-        if (colision(Disparo)) {
-            // Si la nave es golpeada, dejará de estar viva
-            setbVivo(false);
+    public void actualizar(float delta) {
+        tiempoUltimoDisparo += delta;
+        if (tiempoUltimoDisparo >= cadenciaDisparo) {
+            disparar();
+            tiempoUltimoDisparo = 0; // Resetear el tiempo de disparo
         }
-        return true; // Indica que la nave ha sido destruida
+
+        // Limpiar los disparos fuera de la pantalla usando removeIf
+        disparos.removeIf(disparo -> disparo.getPosY() < 0);
+
+        // Mover los disparos hacia abajo
+        for (DisparoEnemigo disparo : disparos) {
+            disparo.moverse(Direccion.ABAJO);
+        }
     }
 
-
-
-
-    public boolean colision(Disparo disparo) {
-        return super.colision(disparo);
+    public void draw(SpriteBatch batch) {
+        batch.draw(getImagen(), getPosX(), getPosY(), getAncho(), getAlto());
+        for (DisparoEnemigo disparo : disparos) {
+            disparo.draw(batch);
+        }
     }
 
+    // Método para detectar colisiones entre un disparo de la nave amiga y la nave enemiga
+    public boolean detectarColision(DisparoAmigo disparo) {
+        if (disparo.colisionaCon(this)) {
+            setEstaVivo(false); // La nave enemiga muere al recibir el disparo
+            return true;
+        }
+        return false;
+    }
 
+    // Getter para los disparos (en caso de que sea necesario acceder desde otra clase)
+    public ArrayList<DisparoEnemigo> getDisparos() {
+        return disparos;
+    }
+
+    // Puedes agregar más lógica de control, como la muerte de la nave enemiga
 }

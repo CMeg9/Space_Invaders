@@ -2,99 +2,88 @@ package com.politecnicomalaga.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-public class Escuadron extends NaveEnemiga {
+public class Escuadron {
+    private static ObjetoVolador.direccion direccion = ObjetoVolador.direccion.DERECHA;
+    private List<NaveEnemiga> navesEnemigas;
+    private Texture texturaNave;
+    private Texture texturaDisparo;
+    private int naveAncho, naveAlto, screenWidth;
+    private Random random;
 
-    private ArrayList<NaveEnemiga> navesEnemigas; // Lista de naves enemigas en el escuadrón
-    private boolean eliminado;                    // Indica si el escuadrón ha sido eliminado
-    private int anchoPantalla;                   // Limite de la pantalla
-    private float velocidadX, velocidadY;        // Velocidad del escuadrón en los ejes X e Y
-
-    // Constructor
-    public Escuadron(int iPosicionY, float velocidadX, float velocidadY, Texture tImgNaveEnemiga, Texture imgDisparoEnemigo, int anchoPantalla, int numNaves) {
-        // Llamada al constructor de NaveEnemiga
-        super(0, iPosicionY, 30, 30, 0, tImgNaveEnemiga);
-
+    public Escuadron(Texture texturaNave, int totalNaves, int posX, int posY, int velocidad,
+                     int naveAncho, int naveAlto, int screenWidth, Texture texturaDisparo) {
+        this.naveAncho = naveAncho;
+        this.naveAlto = naveAlto;
+        this.screenWidth = screenWidth;
+        this.texturaNave = texturaNave;
+        this.texturaDisparo = texturaDisparo;
         this.navesEnemigas = new ArrayList<>();
-        this.eliminado = false;
-        this.anchoPantalla = anchoPantalla;
-        this.velocidadX = velocidadX;
-        this.velocidadY = velocidadY;
+        this.random = new Random();
 
-        // Crear las naves enemigas y distribuirlas en el escuadrón
-        int espacioEntreNaves = anchoPantalla / (numNaves + 1); // Espacio entre naves
-        for (int i = 1; i <= numNaves; i++) {
-            int posX = espacioEntreNaves * i;
-            NaveEnemiga nave = new NaveEnemiga(posX, iPosicionY, 30, 30, 0, tImgNaveEnemiga);
-            navesEnemigas.add(nave);
+        for (int i = 0; i < totalNaves; i++) {
+            navesEnemigas.add(new NaveEnemiga(posX, posY, naveAncho, naveAlto, velocidad, texturaNave, texturaDisparo));
+            posX += naveAncho + naveAncho / 5;
         }
     }
 
-    // Metodo para dibujar todas las naves enemigas del escuadrón
-    @Override
-    public void draw(SpriteBatch batch) {
-        for (NaveEnemiga nave : navesEnemigas) {
-            nave.draw(batch);
-        }
-    }
+    public int actualizarYdibujar(SpriteBatch batch, Batallon batallon) {
+        int totalNavesVivas = 0;
+        direccion = batallon.getDireccion();
 
-    // Metodo para mover el escuadrón
-    @Override
-    public void moverse(int direcX, int direcY) {
+        int maxX = -1, minX = screenWidth;
         for (NaveEnemiga nave : navesEnemigas) {
-            nave.moverse(direcX, direcY);
-        }
-
-        // Verificar si el escuadrón ha alcanzado los límites de la pantalla
-        if (limitePantalla()) {
-            cambioDireccion();
-        }
-    }
-
-    // Metodo para verificar si el escuadrón ha alcanzado los límites de la pantalla
-    private boolean limitePantalla() {
-        for (NaveEnemiga nave : navesEnemigas) {
-            if (nave.getiPosicionX() <= 0 || nave.getiPosicionX() + nave.getiAncho() >= anchoPantalla) {
-                return true;
+            if (nave.isEstaVivo()) {
+                totalNavesVivas++;
+                nave.moverse(direccion);
+                nave.draw(batch);
+                maxX = Math.max(maxX, nave.getiPosX());
+                minX = Math.min(minX, nave.getiPosX());
+                nave.updateDisparos();
+                nave.drawDisparos(batch);
             }
         }
-        return false;
+
+        if ((direccion == ObjetoVolador.direccion.DERECHA && maxX > screenWidth - naveAncho) ||
+            (direccion == ObjetoVolador.direccion.IZQUIERDA && minX < naveAncho)) {
+            bajarEscuadron();
+            batallon.pedirCambioDireccion();
+        }
+
+        return totalNavesVivas;
     }
 
-    // Metodo para cambiar la dirección del escuadrón
-    private void cambioDireccion() {
-        velocidadX = -velocidadX; // Invierte la dirección en el eje X
+    private void bajarEscuadron() {
         for (NaveEnemiga nave : navesEnemigas) {
-            nave.setiPosicionY(nave.getiPosicionY() - 20); // Desciende el escuadrón
+            nave.setiPosY(nave.getiPosY() - naveAlto / 3);
         }
     }
 
-    // Metodo para disparar proyectiles desde las naves enemigas
-    @Override
+    public void procesarDisparosAmigos(List<Disparo> disparosAmigos) {
+        for (NaveEnemiga nave : navesEnemigas) {
+            if (nave.isEstaVivo()) {
+                comprobarImpacto(nave, disparosAmigos);
+            }
+        }
+    }
+
+    private void comprobarImpacto(NaveEnemiga nave, List<Disparo> disparosAmigos) {
+        disparosAmigos.removeIf(disparo -> disparo.colisionaCon(nave) && (nave.setEstaVivo(false)));
+    }
+
     public void disparar() {
-        for (NaveEnemiga nave : navesEnemigas) {
-            if (Math.random() < 0.01) { // Probabilidad de disparar (1%)
-                nave.disparar();
+        if (!navesEnemigas.isEmpty()) {
+            NaveEnemiga nave = navesEnemigas.get(random.nextInt(navesEnemigas.size()));
+            if (nave.isEstaVivo()) {
+                nave.disparar(texturaDisparo);
             }
         }
     }
 
-    // Metodo para verificar si el escuadrón ha sido eliminado
-    public boolean isEliminado() {
-        return navesEnemigas.isEmpty();
-    }
-
-    // Metodo para eliminar una nave enemiga del escuadrón
-    public void eliminarNave(NaveEnemiga nave) {
-        navesEnemigas.remove(nave);
-    }
-
-    // Getter para la lista de naves enemigas
-    public ArrayList<NaveEnemiga> getNavesEnemigas() {
+    public List<NaveEnemiga> getNaves() {
         return navesEnemigas;
     }
-
-
 }

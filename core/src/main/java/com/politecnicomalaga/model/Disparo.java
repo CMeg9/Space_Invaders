@@ -4,37 +4,28 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Disparo extends ObjetoVolador {
+    private boolean esAmigo;
 
-    // Creacion de enum para dar Origen sobre el enemigo y jugador
-    public enum Origen {NaveAmiga, NaveEnemiga}
-    // Nombra de origen
-    private Origen origen;
-
-    // Herencia
-    public Disparo(int i, int i1, Texture texture, int i2) {
-        super(iPosicionX, iPosicionY, iAlto, iAncho, iVelocidad, true, tImg);
-        this.origen = origen;
+    public Disparo(int posX, int posY, int ancho, int alto, int velocidad, Texture imagen, boolean esAmigo) {
+        super(posX, posY, ancho, alto, velocidad, imagen);
+        this.esAmigo = esAmigo;
     }
 
-    // Mover el disparo, si es player se mueve arriba y hacia abajo si es enemigo
-    public void moverseY() {
-        // Mueve el disparo en Y según la velocidad
-        if (origen == Origen.NaveAmiga) { // Si es jugador
-            setiPosicionY(getiPosicionY() - getiVelocidad()); // Disparo hacia arriba
-        } else if (origen == Origen.NaveEnemiga) { // Si es enemigo
-            setiPosicionY(getiPosicionY() + getiVelocidad()); // Disparo hacia abajo
-        }
-    }
-    public Origen getOrigen() {
-        return origen;
-    }
-    public void setOrigen(Origen origen) {
-        this.origen = origen;
+    public boolean isAmigo() {
+        return esAmigo;
     }
 
-    //Metodo para dibujar el disparo
+
+    public void moverse() {
+        setPosY(getPosY() + (isAmigo() ? getVelocidad() : -getVelocidad()));
+    }
+
     public void draw(SpriteBatch batch) {
-        batch.draw(gettImg(), getiPosicionX(), getiPosicionY(), getiAncho(), getiAlto());
+        batch.draw(getImagen(), getPosX(), getPosY(), getAncho(), getAlto());
     }
 
+    @Override
+    public static boolean colisionaCon(ObjetoVolador objeto) {
+        return super.colisionaCon(objeto);
+    }
 }
