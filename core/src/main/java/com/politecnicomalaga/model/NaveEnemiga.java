@@ -15,14 +15,14 @@ public class NaveEnemiga extends Nave {
 
     @Override
     public void actualizar() {
-        bounds.y -= VELOCIDAD * Gdx.graphics.getDeltaTime();
-        if (bounds.y < 0) {
-            bounds.y = Gdx.graphics.getHeight();
+        limites.y -= VELOCIDAD * Gdx.graphics.getDeltaTime();
+        if (limites.y < 0) {
+            limites.y = Gdx.graphics.getHeight();
         }
     }
 
     @Override
     public void dibujar(SpriteBatch batch) {
-        batch.draw(textura, bounds.x, bounds.y, bounds.width, bounds.height);
+        batch.draw(textura, limites.x, limites.y, limites.width, limites.height);
     }
 }

@@ -15,12 +15,12 @@ public class DisparoAmigo extends Disparo {
 
     @Override
     public void actualizar() {
-        bounds.y += VELOCIDAD * Gdx.graphics.getDeltaTime();
+        limites.y += VELOCIDAD * Gdx.graphics.getDeltaTime();
     }
 
     @Override
     public void dibujar(SpriteBatch batch) {
-        batch.draw(textura, bounds.x, bounds.y, bounds.width, bounds.height);
+        batch.draw(textura, limites.x, limites.y, limites.width, limites.height);
     }
 }
 

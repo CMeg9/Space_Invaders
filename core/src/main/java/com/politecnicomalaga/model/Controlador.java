@@ -60,7 +60,7 @@ public class Controlador {
         for (Disparo disparo : disparos) {
             if (disparo instanceof DisparoAmigo) {
                 batallon.verificarColision(disparo, iter);
-            } else if (disparo.bounds.overlaps(naveAmiga.bounds)) {
+            } else if (disparo.limites.overlaps(naveAmiga.limites)) {
                 juegoTerminado = true;
                 victoria = false;
             }

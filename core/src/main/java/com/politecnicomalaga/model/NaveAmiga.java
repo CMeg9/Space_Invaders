@@ -14,11 +14,11 @@ public class NaveAmiga extends Nave {
     }
 
     public void moverIzquierda() {
-        bounds.x -= VELOCIDAD * Gdx.graphics.getDeltaTime();
+        limites.x -= VELOCIDAD * Gdx.graphics.getDeltaTime();
     }
 
     public void moverDerecha() {
-        bounds.x += VELOCIDAD * Gdx.graphics.getDeltaTime();
+        limites.x += VELOCIDAD * Gdx.graphics.getDeltaTime();
     }
 
     @Override
@@ -28,6 +28,6 @@ public class NaveAmiga extends Nave {
 
     @Override
     public void dibujar(SpriteBatch batch) {
-        batch.draw(textura, bounds.x, bounds.y, bounds.width, bounds.height);
+        batch.draw(textura, limites.x, limites.y, limites.width, limites.height);
     }
 }
