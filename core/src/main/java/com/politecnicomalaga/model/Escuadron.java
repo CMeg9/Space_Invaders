@@ -36,7 +36,6 @@ public class Escuadron {
         while (naveIter.hasNext()) {
             NaveEnemiga nave = naveIter.next();
             if (nave.limites.overlaps(disparo.limites)) {
-                iter.remove();
                 naveIter.remove();
                 break;
             }
